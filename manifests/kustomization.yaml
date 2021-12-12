@@ -11,4 +11,4 @@ images:
   newTag: be41a3358cb67ead743d7d35c153defcf8fc8170
 - name: rs/web-app
   newName: 432127183358.dkr.ecr.us-east-2.amazonaws.com/mingtong/web-app
-  newTag: 9e89369641d27da1b83e5c41547b5e1c7e552198
+  newTag: fb8fb6e3cee9ac62352db03f46de296cb4aee05a
