@@ -59,7 +59,7 @@ phases:
           - git config --global user.email "robot@codebuild.aws"
           - git config --global user.name "robot"
           - cd container-web-example/manifests
-          - kustomize edit set image rs/$APP_NAME=$APP_REPOSITORY_URI:$IMAGE_TAG
+          - kustomize edit set image mingtong/$APP_NAME=$APP_REPOSITORY_URI:$IMAGE_TAG
           - cat kustomization.yaml
           - cd ../
           - git add -A
