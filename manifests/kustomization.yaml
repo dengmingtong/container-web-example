@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# namespace to deploy all resources to
+namespace: mingtong-test
+
+# all with following *kustomization*
+images:
+- name: mingtong/web-app
+  newName: 522244679887.dkr.ecr.ap-northeast-2.amazonaws.com/rs/demo
+  newTag: be41a3358cb67ead743d7d35c153defcf8fc8170
