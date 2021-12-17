@@ -55,10 +55,10 @@ phases:
             echo "--------------------------------------------------------------------------------"
 
           - cd; mkdir workspace; cd workspace 
-          - git clone https://$ACCESS_TOKEN:x-oauth-basic@github.com/dengmingtong/container-web-example.git
+          - git clone https://$ACCESS_TOKEN:x-oauth-basic@github.com/dengmingtong/argocd-manifest.git
           - git config --global user.email "robot@codebuild.aws"
           - git config --global user.name "robot"
-          - cd container-web-example/manifests
+          - cd argocd-manifest/dev-env
           - kustomize edit set image mingtong/$APP_NAME=$APP_REPOSITORY_URI:$IMAGE_TAG
           - cat kustomization.yaml
           - cd ../
