@@ -6,6 +6,7 @@ env:
 
   secrets-manager:
     ACCESS_TOKEN: github-dengmingtong:accessToken
+    
 
 phases:
     install:
