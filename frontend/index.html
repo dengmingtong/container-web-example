@@ -1,3 +1,34 @@
 <html>
-    <p>This is website dev env</p>
+    <body>
+        <p>This is website</p>
+        <!-- <p id="env-p"></p>
+        <script src="jquery.min.js"></script>
+        <script src="axios.min.js"></script>
+        <script>
+            console.log('test');
+
+            $(function()
+		    {
+			    var api = 'http://event:7080/'
+                console.log('URL: ' + api);
+                let axiosConfig = {
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    }
+                };
+                $('#env-p').text('test')
+                axios.get(api, axiosConfig)
+                .then(function (response) 
+                {
+                    $('#env-p').text('test!')
+                    console.log("success", response);
+                })
+                .catch(function (error) 
+                {
+                    console.log("error");
+                });
+            });
+        </script> -->
+    </body>
+
 </html>
