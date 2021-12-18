@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    APP_NAME: "web-app"
+    APP_NAME: "web-frontend"
 
   secrets-manager:
     ACCESS_TOKEN: github-dengmingtong:accessToken
