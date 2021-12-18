@@ -1,0 +1,70 @@
+version: 0.2
+
+env:
+  variables:
+    APP_NAME: "web-backend"
+
+  secrets-manager:
+    ACCESS_TOKEN: github-dengmingtong:accessToken
+
+phases:
+    install:
+      commands:
+        - export CODEBUILD_GIT_MESSAGE="$(git log -1 --pretty=%B)"
+        - echo $CODEBUILD_GIT_MESSAGE
+        - echo $AWS_DEFAULT_REGION
+        - aws --version
+        - |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+        - export PATH=$PWD:$PATH
+        - kustomize version
+    pre_build:
+        commands:
+          - echo Logging in to Amazon ECR...
+          - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+          - ACCOUNT_ID=$(aws sts get-caller-identity|jq -r '.Account')
+          - IMAGE_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+          - |
+            echo "-------------------pre_build app------------------------------------------------"
+            APP_IMAGE=mingtong/$APP_NAME
+            APP_REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$APP_IMAGE
+            aws ecr create-repository \
+              --repository-name $APP_IMAGE \
+              --image-scanning-configuration scanOnPush=true \
+              --region $AWS_DEFAULT_REGION || true
+            echo "--------------------------------------------------------------------------------"
+    build:
+        commands:
+          - echo Build started on `date`
+          - |
+            echo "------------------build app image-----------------------------------------------"
+            set -e
+            cd $CODEBUILD_SRC_DIR
+            echo Building $APP_IMAGE:$IMAGE_TAG...
+            docker build . -t $APP_IMAGE:$IMAGE_TAG
+            echo Tagging $APP_REPOSITORY_URI:$IMAGE_TAG...
+            docker tag $APP_IMAGE:$IMAGE_TAG $APP_REPOSITORY_URI:$IMAGE_TAG
+            echo "--------------------------------------------------------------------------------"
+
+    post_build:
+        commands:
+          - echo Build completed on `date`
+          - |
+            echo "------------------push app image------------------------------------------------"
+            docker push $APP_REPOSITORY_URI:$IMAGE_TAG
+            echo "--------------------------------------------------------------------------------"
+
+          - cd; mkdir workspace; cd workspace 
+          - git clone https://$ACCESS_TOKEN:x-oauth-basic@github.com/dengmingtong/argocd-manifest.git
+          - git config --global user.email "robot@codebuild.aws"
+          - git config --global user.name "robot"
+          - cd argocd-manifest/dev-env
+          - kustomize edit set image mingtong/$APP_NAME=$APP_REPOSITORY_URI:$IMAGE_TAG
+          - cat kustomization.yaml
+          - cd ../
+          - git add -A
+          - git commit -m "${CODEBUILD_GIT_MESSAGE}"
+          - git pull --rebase
+          - git push
+
+
