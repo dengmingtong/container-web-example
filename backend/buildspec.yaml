@@ -6,7 +6,7 @@ env:
 
   secrets-manager:
     ACCESS_TOKEN: github-dengmingtong:accessToken
-    
+
 
 phases:
     install:
@@ -40,7 +40,7 @@ phases:
           - |
             echo "------------------build app image-----------------------------------------------"
             set -e
-            cd $CODEBUILD_SRC_DIR
+            cd $CODEBUILD_SRC_DIR/backend
             echo Building $APP_IMAGE:$IMAGE_TAG...
             docker build . -t $APP_IMAGE:$IMAGE_TAG
             echo Tagging $APP_REPOSITORY_URI:$IMAGE_TAG...
