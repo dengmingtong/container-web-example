@@ -17,7 +17,7 @@ def read_root():
     logging.info("read_root start")
     logging.info("read_root start {}".format(os.environ.get('STAGE')))
     if 'STAGE' in os.environ: 
-        return {"Env ":os.environ.get('STAGE')}
+        return {"Hello world, Env ":os.environ.get('STAGE')}
     else: 
         return {"Env ": MANDATORY_ENV_VARS['STAGE']}
 
