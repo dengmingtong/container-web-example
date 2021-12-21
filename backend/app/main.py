@@ -17,9 +17,9 @@ def read_root():
     logging.info("read_root start")
     logging.info("read_root start {}".format(os.environ.get('STAGE')))
     if 'STAGE' in os.environ: 
-        return {"Stage":os.environ.get('STAGE')}
+        return {"Env ":os.environ.get('STAGE')}
     else: 
-        return {"Stage": MANDATORY_ENV_VARS['STAGE']}
+        return {"Env ": MANDATORY_ENV_VARS['STAGE']}
 
 
 @app.get("/items/{item_id}")
